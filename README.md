@@ -8,7 +8,7 @@ A simple PHP REST API for managing tasks (CRUD) without any framework. Uses MySQ
 
 - User-based task management
 - CRUD operations
-- Token-based authentication (simple)
+- Token-based authentication (jwt)
 - Query by status: `GET /tasks?status=pending`
 
 ---
@@ -23,9 +23,17 @@ project-root/
 │
 ├── controllers/
 │   └── TaskController.php
+    └── UserController.php
+├── database/
+│   └── database.sqlite
+
+├── migrations/
+   └── create_tasks_table.php
+   └── create_users_table.php
 │
 ├── models/
-│   └── Task.php
+   └── Task.php
+   └── USer.php
 │
 ├── routes/
 │   └── api.php
@@ -52,13 +60,22 @@ project-root/
 ## ⚙️ Setup Without Docker
 
 1. Clone this repo
-2. Create MySQL DB and import `tasks.sql`
-3. Update credentials in `config/Database.php`
-4. Start PHP server:
+
+```bash
+git clone https://github.com/Girmex/task-manager-api.git
+```
+2. Start PHP server:
 
 ```bash
 php -S localhost:8000
 ```
+3. Migrate data into SQLite DB 
+
+```bash
+php migrations/create_users_table.php
+php migrations/create_tasks_table.php
+```
+
 
 Then access:  
 `GET http://localhost:8000/tasks`
@@ -100,19 +117,4 @@ docker-compose up --build
 ```
 
 ---
-
-## 👤 Authentication
-
-You can simulate user ID from the route file like:
-
-```php
-$userId = 1; // assume logged in user
-$taskController = new TaskController($db, $userId);
-```
-
----
-
-## 📝 License
-
-MIT - Free to use and modify.
 
