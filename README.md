@@ -1,103 +1,118 @@
-# Task Manager REST API (PHP + SQLite)
+# PHP Task Management API
 
-A simple REST API for task management built with PHP and SQLite. This API supports user registration, login, and task CRUD operations.
+A simple PHP REST API for managing tasks (CRUD) without any framework. Uses MySQL and is ready for Docker but works without it as well.
 
-## 📦 Features
+---
 
-- User registration and login (with basic token generation)
-- Task creation, reading, updating, and deletion
-- SQLite database with PDO
-- Basic routing
-- API tested via `cURL`
+## 🧱 Features
+
+- User-based task management
+- CRUD operations
+- Token-based authentication (simple)
+- Query by status: `GET /tasks?status=pending`
+
+---
+
+## 📁 Folder Structure
+
+```
+project-root/
+│
+├── config/
+│   └── Database.php
+│
+├── controllers/
+│   └── TaskController.php
+│
+├── models/
+│   └── Task.php
+│
+├── routes/
+│   └── api.php
+│
+├── index.php
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
+```
 
 ---
 
 ## 🚀 Getting Started
 
-### 🛠 Prerequisites
+### 🔧 Requirements
 
-- PHP 7.4+
-- [XAMPP](https://www.apachefriends.org/) or any PHP server with SQLite support
+- PHP >= 7.4
+- MySQL
+- Composer (optional)
+- Docker (optional)
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Setup Without Docker
 
-1. **Clone the project**
+1. Clone this repo
+2. Create MySQL DB and import `tasks.sql`
+3. Update credentials in `config/Database.php`
+4. Start PHP server:
 
 ```bash
-git clone https://github.com/your-username/task-manager-rest-api.git
-cd task-manager-rest-api
+php -S localhost:8000
+```
 
+Then access:  
+`GET http://localhost:8000/tasks`
 
-php -S localhost:8080
+---
 
+## 🐳 Setup With Docker
 
-php migrations/create_users_table.php
-php migrations/create_tasks_table.php
+1. Make sure Docker is installed
+2. Run:
 
-🧪 API Testing (with curl)
-✅ Register User
-bash
-Copy
-Edit
-curl -X POST http://localhost:8080/register \
--H "Content-Type: application/json" \
--d '{"username":"alice", "email":"alice@example.com", "password":"pass123"}'
-🔐 Login
-bash
-Copy
-Edit
-curl -X POST http://localhost:8080/login \
--H "Content-Type: application/json" \
--d '{"email":"alice@example.com", "password":"pass123"}'
-📋 Get All Tasks (Protected)
-bash
-Copy
-Edit
-curl -X GET http://localhost:8080/tasks \
--H "Authorization: Bearer <your_token_here>"
-➕ Create Task
-bash
-Copy
-Edit
-curl -X POST http://localhost:8080/tasks \
--H "Authorization: Bearer <your_token_here>" \
--H "Content-Type: application/json" \
--d '{"title":"Write report", "description":"Weekly team report"}'
-📝 Update Task
-bash
-Copy
-Edit
-curl -X PUT http://localhost:8080/tasks/1 \
--H "Authorization: Bearer <your_token_here>" \
--H "Content-Type: application/json" \
--d '{"title":"Updated title", "description":"Updated description"}'
-❌ Delete Task
-bash
-Copy
-Edit
-curl -X DELETE http://localhost:8080/tasks/1 \
--H "Authorization: Bearer <your_token_here>"
-🧱 Project Structure
-pgsql
-Copy
-Edit
-task-manager-rest-api/
-├── controllers/
-│   └── UserController.php
-│   └── TaskController.php
-├── models/
-│   └── User.php
-│   └── Task.php
-├── migrations/
-│   └── create_users_table.php
-│   └── create_tasks_table.php
-├── routes/
-│   └── api.php
-├── helpers/
-│   └── Database.php
-├── index.php
-└── README.md
+```bash
+docker-compose up --build
+```
 
+3. Visit the app at:  
+   `http://localhost:8000`
+
+---
+
+## 📌 API Endpoints
+
+| Method | Endpoint           | Description               |
+|--------|--------------------|---------------------------|
+| GET    | /tasks             | List all tasks            |
+| GET    | /tasks?status=done | Filter by status          |
+| GET    | /tasks/{id}        | Get single task           |
+| POST   | /tasks             | Create a new task         |
+| PUT    | /tasks/{id}        | Update existing task      |
+| DELETE | /tasks/{id}        | Delete a task             |
+
+**Example payload for POST/PUT:**
+```json
+{
+  "title": "New Task",
+  "description": "Details about task",
+  "status": "pending"
+}
+```
+
+---
+
+## 👤 Authentication
+
+You can simulate user ID from the route file like:
+
+```php
+$userId = 1; // assume logged in user
+$taskController = new TaskController($db, $userId);
+```
+
+---
+
+## 📝 License
+
+MIT - Free to use and modify.
 
