@@ -1,0 +1,39 @@
+### Register User
+POST http://localhost:8080/register
+Content-Type: application/json
+
+{
+  "username": "Was1",
+  "email": "girma@mailm.com",
+  "password": "134456"
+}
+
+###
+
+### Login User
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username": "Was",
+  "password": "134456"
+}
+
+###
+
+### Create Task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+Authorization: Bearerey J0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NTQ1NTI5OTIsImV4cCI6MTc1NDU1NjU5Miwic3ViIjoxLCJ1c2VybmFtZSI6IldhcyJ9.3vViNaUbSAyqg9SSZKSOcEqfUR5N8UlakVS4Vhp_7FU
+
+{
+  "title": "Finish docs",
+  "description": "Write API documentation",
+  "status": "pending"
+}
+
+###
+
+### Get All Tasks
+GET http://localhost:8080/tasks
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
