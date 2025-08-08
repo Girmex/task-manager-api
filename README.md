@@ -58,10 +58,8 @@ composer install
 ### 3️⃣ Configure Database
 **SQLite** is used, so no username, password, or host are required.  
 By default, the database file will be stored at:
-```
-database/database.sqlite
-
-But you can change the .env.example to .env and you can change the env varibles the database path and the jwt secret key.
+-> database/database.sqlite
+But you can rename the .env.example to .env and you can change the env varibles the database path and the jwt secret key.
 
 ### 4️⃣ Run Migrations
 ```bash
