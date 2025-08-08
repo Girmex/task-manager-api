@@ -1,120 +1,132 @@
-# PHP Task Management API
+# 📝 PHP Task API (JWT Auth + SQLite)
 
-A simple PHP REST API for managing tasks (CRUD) without any framework. Uses MySQL and is ready for Docker but works without it as well.
-
----
-
-## 🧱 Features
-
-- User-based task management
-- CRUD operations
-- Token-based authentication (jwt)
-- Query by status: `GET /tasks?status=pending`
+A simple REST API for managing tasks with **JWT authentication** using **PHP** and **SQLite**.  
+Includes user registration, login, task CRUD, and filtering tasks by status.
 
 ---
 
-## 📁 Folder Structure
-
+## 📂 Project Structure
 ```
 project-root/
-│
-├── config/
+│── config/
 │   └── Database.php
-│
-├── controllers/
+│── controllers/
+│   ├── AuthController.php
 │   └── TaskController.php
-    └── UserController.php
-├── database/
-│   └── database.sqlite
-
-├── migrations/
-   └── create_tasks_table.php
-   └── create_users_table.php
-│
-├── models/
-   └── Task.php
-   └── USer.php
-│
-├── routes/
+│── middleware/
+│   └── AuthMiddleware.php
+│── migrations/
+│   ├── create_users_table.php
+│   └── create_tasks_table.php
+│── models/
+│   ├── User.php
+│   └── Task.php
+│── routes/
 │   └── api.php
-│
-├── index.php
-├── Dockerfile
-├── docker-compose.yml
-└── README.md
+│── vendor/
+│── .env
+│── composer.json
+│── index.php
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Installation
 
-### 🔧 Requirements
-
-- PHP >= 7.4
-- MySQL
-- Composer (optional)
-- Docker (optional)
-
----
-
-## ⚙️ Setup Without Docker
-
-1. Clone this repo
-
+### 1️⃣ Clone Repo
 ```bash
-git clone https://github.com/Girmex/task-manager-api.git
+git clone https://github.com/your-username/php-task-api.git
+cd php-task-api
 ```
-2. Start PHP server:
 
+### 2️⃣ Install Dependencies
 ```bash
-php -S localhost:8000
+composer install
 ```
-3. Migrate data into SQLite DB 
 
+### 3️⃣ Configure Database
+**SQLite** is used, so no username, password, or host are required.  
+The database file will be stored at:
+```
+database/database.sqlite
+```
+Make sure the `database/` folder exists:
+```bash
+mkdir database
+touch database/database.sqlite
+```
+
+### 4️⃣ Run Migrations
 ```bash
 php migrations/create_users_table.php
 php migrations/create_tasks_table.php
 ```
 
-
-Then access:  
-`GET http://localhost:8000/tasks`
-
 ---
 
-## 🐳 Setup With Docker
-
-1. Make sure Docker is installed
-2. Run:
-
+## 🖥️ Running the API
 ```bash
-docker-compose up --build
+php -S localhost:8000
 ```
-
-3. Visit the app at:  
-   `http://localhost:8000`
 
 ---
 
-## 📌 API Endpoints
+## 🧪 API Endpoints
 
-| Method | Endpoint           | Description               |
-|--------|--------------------|---------------------------|
-| GET    | /tasks             | List all tasks            |
-| GET    | /tasks?status=done | Filter by status          |
-| GET    | /tasks/{id}        | Get single task           |
-| POST   | /tasks             | Create a new task         |
-| PUT    | /tasks/{id}        | Update existing task      |
-| DELETE | /tasks/{id}        | Delete a task             |
+### 1️⃣ Register
+```bash
+curl -X POST "http://localhost:8000/register" -H "Content-Type: application/json" -d "{\"username\":\"john\",\"email\":\"john@example.com\",\"password\":\"secret123\"}"
+```
 
-**Example payload for POST/PUT:**
+### 2️⃣ Login
+```bash
+curl -X POST "http://localhost:8000/login" -H "Content-Type: application/json" -d "{\"username\":\"john\",\"password\":\"secret123\"}"
+```
+_Response Example:_
 ```json
-{
-  "title": "New Task",
-  "description": "Details about task",
-  "status": "pending"
-}
+{ "token": "your-jwt-token" }
 ```
 
 ---
 
+### 3️⃣ Create Task
+```bash
+curl -X POST "http://localhost:8000/tasks" -H "Content-Type: application/json" -H "Authorization: Bearer your-jwt-token" -d "{\"title\":\"Buy milk\",\"description\":\"Get from store\",\"status\":\"pending\"}"
+```
+
+---
+
+### 4️⃣ Get All Tasks
+```bash
+curl -X GET "http://localhost:8000/tasks" -H "Authorization: Bearer your-jwt-token"
+```
+
+---
+
+### 5️⃣ Get Tasks by Status
+```bash
+curl -X GET "http://localhost:8000/tasks?status=pending" -H "Authorization: Bearer your-jwt-token"
+```
+Valid statuses:  
+- `pending`  
+- `in-progress`  
+- `completed`  
+
+---
+
+### 6️⃣ Update Task
+```bash
+curl -X PUT "http://localhost:8000/tasks/1" -H "Content-Type: application/json" -H "Authorization: Bearer your-jwt-token" -d "{\"title\":\"Buy bread\",\"description\":\"Whole grain\",\"status\":\"completed\"}"
+```
+
+---
+
+### 7️⃣ Delete Task
+```bash
+curl -X DELETE "http://localhost:8000/tasks/1" -H "Authorization: Bearer your-jwt-token"
+```
+
+---
+
+## 📄 License
+MIT
