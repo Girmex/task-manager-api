@@ -10,12 +10,10 @@ project-root/
 │── config/
 │ └── Database.php
 │── controllers/
-│ ├── AuthController.php
+│ ├── UserController.php
 │ └── TaskController.php
 │── database/
 │ └── database.sqlite
-│── middleware/
-│ └── AuthMiddleware.php
 │── migrations/
 │ ├── create_tasks_table.php
 │ └── create_users_table.php
@@ -59,7 +57,7 @@ composer install
 **SQLite** is used, so no username, password, or host are required.  
 By default, the database file will be stored at:
  database/database.sqlite
-But you can rename the .env.example to .env and you can change the env varibles the database path and the jwt secret key.
+But you can rename the .env.example to .env and you can change the env variables the database path and the jwt secret key.
 
 ### 4️⃣ Run Migrations
 ```bash
