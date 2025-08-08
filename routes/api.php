@@ -49,6 +49,10 @@ if (preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
         $taskController->updateTask($taskId);
         exit;
     }
+    if ($method === 'DELETE') {
+        $taskController->deleteTask($taskId);
+        exit;
+    }
 }
 
 // Default fallback

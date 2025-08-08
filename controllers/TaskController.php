@@ -12,10 +12,10 @@ class TaskController {
 
 
     public function getAllTasks() {
-        $status = $_GET['status'] ?? 'in-progress';
+        $status = $_GET['status'] ?? null;
         $tasks=$this->taskModel->getAll($this->userId, $status);
         if($tasks){
-            echo json_encode($task);   
+            echo json_encode($tasks);   
         }
         else {
             echo json_encode(["message" => "No task found"]);
@@ -33,8 +33,8 @@ class TaskController {
     }
 
     public function createTask() {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['title'], $data['description'], $data['status'])) {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!isset($data->title, $data->description, $data->status)) {
             http_response_code(400);
             echo json_encode(["message" => "Missing required fields"]);
             return;
@@ -44,8 +44,8 @@ class TaskController {
     }
 
     public function updateTask($id) {
-        $data = json_decode(file_get_contents("php://input"), true);
-        if (!isset($data['title'], $data['description'], $data['status'])) {
+        $data = json_decode(file_get_contents("php://input"));
+        if (!isset($data->title, $data->description, $data->status)) {
             http_response_code(400);
             echo json_encode(["message" => "Missing required fields"]);
             return;
@@ -53,6 +53,16 @@ class TaskController {
         $updated = $this->taskModel->update($this->userId, $id, $data);
         if ($updated) {
             echo json_encode(["message" => "Task updated"]);
+        } else {
+            http_response_code(404);
+            echo json_encode(["message" => "Task not found or unauthorized"]);
+        }
+    }
+
+    public function deleteTask($id) {
+        $deleted = $this->taskModel->delete($this->userId, $id);
+        if ($deleted) {
+            echo json_encode(["message" => "Task deleted"]);
         } else {
             http_response_code(404);
             echo json_encode(["message" => "Task not found or unauthorized"]);

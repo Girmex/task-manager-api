@@ -42,13 +42,27 @@ class Task {
     }
 
     public function update($userId, $id, $data) {
-        $sql = "UPDATE {$this->table} SET title = :title, description = :description, status = :status, updated_at = datetime('now') WHERE id = :id AND user_id = :user_id";
+        $sql = "UPDATE {$this->table} 
+                SET title = :title, description = :description, status = :status, updated_at = datetime('now') 
+                WHERE id = :id AND user_id = :user_id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':title', $data->title);
         $stmt->bindParam(':description', $data->description);
         $stmt->bindParam(':status', $data->status);
         $stmt->bindParam(':id', $id);
         $stmt->bindParam(':user_id', $userId);
-        return $stmt->execute();
+        
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+    
+
+    public function delete($userId, $id) {
+        $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id = :id AND user_id = :user_id");
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+
     }
 }

@@ -38,6 +38,11 @@ class UserController {
             echo json_encode(['message' => 'Password must be at least 6 characters']);
             return;
         }
+        if (strlen($username) < 3) {
+            http_response_code(400);
+            echo json_encode(['message' => 'Username must be at least 3 characters']);
+            return;
+        }
 
         if ($this->userModel->findByUsername($username)) {
             http_response_code(409);
