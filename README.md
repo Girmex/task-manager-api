@@ -1,4 +1,4 @@
-# 📝 PHP Task API (JWT Auth + SQLite)
+# 📝 PHP Task Manager API (JWT Auth + SQLite)
 
 A simple REST API for managing tasks with **JWT authentication** using **PHP** and **SQLite**, ready for Docker but works without it as well. It is a user based task management system. It includes user registration, login, task CRUD, and filtering tasks by status.
 
